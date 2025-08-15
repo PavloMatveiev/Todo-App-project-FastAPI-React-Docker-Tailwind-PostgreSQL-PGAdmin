@@ -207,7 +207,6 @@ curl -i -X POST http://localhost:8080/api/auth/token \
 - **Port already allocated**: change the host port in `docker-compose.yml` (e.g., map pgAdmin `5051:80`) or stop the other process.
 - **Requests end up at `/auth` (not `/api/auth`)**: frontend must call `/api/...` and Nginx must proxy `/api` to backend. FastAPI should be created with a compatible base (e.g., `FastAPI(root_path="/api")`) to make redirects/docs URLs correct behind a proxy.
 - **Windows curl JSON 422**: in CMD escape double quotes inside `-d` (see commands above) or use PowerShell.
-- **500 on registration with argon2**: if you enable Argon2 in passlib, also install `argon2-cffi` in the backend image; or keep only `bcrypt` in the passlib context.
 
 ## **12. References (official docs)**
 
