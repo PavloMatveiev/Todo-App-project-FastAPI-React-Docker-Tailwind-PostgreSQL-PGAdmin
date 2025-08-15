@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+.env
+.env.*
+
+# Node / Vite
+frontend/node_modules/
+frontend/dist/
+
+# Docker
+*.log
+.dockerignore
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
