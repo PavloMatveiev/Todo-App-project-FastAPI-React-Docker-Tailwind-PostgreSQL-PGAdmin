@@ -28,7 +28,7 @@ A production-like full‑stack application demonstrating **clean API design**, *
 10. Useful Commands
 11. Troubleshooting
 12. References
-13. License / Contributing
+13. Contributing
 
 ## **1. Architecture**
 
@@ -218,7 +218,6 @@ curl -i -X POST http://localhost:8080/api/auth/token \
 - Tailwind CSS forms plugin: https://v3.tailwindcss.com/docs/plugins and https://github.com/tailwindlabs/tailwindcss-forms
 - SQLAlchemy documentation: https://docs.sqlalchemy.org/ (project site: https://www.sqlalchemy.org/)
 
-## **13. License / Contributing**
+## **13. Contributing**
 
-Choose a license (e.g., **MIT**) and add a `LICENSE` file.
 Contributions are welcome: open an issue/PR with steps to reproduce and screenshots for UI changes.
