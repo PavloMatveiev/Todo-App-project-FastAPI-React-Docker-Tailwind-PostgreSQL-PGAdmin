@@ -18,7 +18,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 SECRET_KEY = "197b2c37c391bed93fe80344fe73b806947a65e36206e05a1a23c2fa12702fe3"
 ALGORITHM = "HS256"
 
-bcrypt_context = CryptContext(schemes=["argon2", "bcrypt"], deprecated="auto", argon2__type="ID")
+bcrypt_context = CryptContext(schemes=["bcrypt"])
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 class CreateUserRequest(BaseModel):
@@ -45,10 +45,7 @@ def authenticate_user(username: str, password: str, db: Session):
         return False
     if not bcrypt_context.verify(password, user.hashed_password):
         return False
-    # Update the hash when the scheme is outdated
-    if bcrypt_context.needs_update(user.hashed_password):
-        user.hashed_password = bcrypt_context.hash(password)
-        db.commit()
+
     return user
 
 def create_access_token(username: str, user_id: int, role: str, expires_delta: timedelta):
