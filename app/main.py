@@ -8,7 +8,6 @@ from .routers import auth, todos, admin, users
 
 app = FastAPI(root_path="/api") 
 
-# Create tables (SQLite)
 Base.metadata.create_all(bind=engine)
 
 # CORS for React (Vite default 5173, sometimes 3000)
