@@ -1,12 +1,14 @@
 import axios from "axios";
 
-  const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "/api",
-  });
+const baseURL = (import.meta.env.VITE_API_URL || "/api").replace(/\/$/, "");
+const api = axios.create({ baseURL });
+
+const token = localStorage.getItem("token");
+if (token) api.defaults.headers.common.Authorization = `Bearer ${token}`;
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("access_token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  const t = localStorage.getItem("token");
+  if (t) config.headers.Authorization = `Bearer ${t}`;
   return config;
 });
 

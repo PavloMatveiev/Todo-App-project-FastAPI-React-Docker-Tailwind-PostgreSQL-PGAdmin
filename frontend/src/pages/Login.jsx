@@ -33,30 +33,15 @@ export default function Login() {
       <form onSubmit={onSubmit} className="space-y-4">
         <div>
           <label className="label">Username</label>
-          <input
-            className="input"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+          <input className="input" value={username} onChange={(e) => setUsername(e.target.value)} required />
         </div>
         <div>
           <label className="label">Password</label>
-          <input
-            className="input"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
         {err && <p className="text-sm text-rose-600">{err}</p>}
-        <button type="submit" className="btn btn-primary">
-          Login
-        </button>
-        <Link to="/register" className="ml-2 text-sm underline">
-          No account? Register
-        </Link>
+        <button type="submit" className="btn btn-primary">Login</button>
+        <Link to="/register" className="ml-2 text-sm underline">No account? Register</Link>
       </form>
     </div>
   );

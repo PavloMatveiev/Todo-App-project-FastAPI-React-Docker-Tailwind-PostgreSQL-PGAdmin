@@ -43,9 +43,7 @@ export default function Register() {
         if (typeof d === "string") msg = d;
         else if (d.detail) {
           if (Array.isArray(d.detail)) {
-            msg = d.detail
-              .map((x) => x.msg || x.detail || JSON.stringify(x))
-              .join(", ");
+            msg = d.detail.map((x) => x.msg || x.detail || JSON.stringify(x)).join(", ");
           } else msg = d.detail;
         }
       }
@@ -59,96 +57,51 @@ export default function Register() {
       <form onSubmit={onSubmit} className="grid grid-cols-1 gap-4">
         <div>
           <label className="label">Email</label>
-          <input
-            className="input"
-            value={form.email}
-            onChange={(e) => set("email", e.target.value)}
-            required
-          />
+          <input className="input" value={form.email} onChange={(e) => set("email", e.target.value)} required />
         </div>
         <div>
           <label className="label">Username</label>
-          <input
-            className="input"
-            value={form.username}
-            onChange={(e) => set("username", e.target.value)}
-            required
-          />
+          <input className="input" value={form.username} onChange={(e) => set("username", e.target.value)} required />
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">First name</label>
-            <input
-              className="input"
-              value={form.first_name}
-              onChange={(e) => set("first_name", e.target.value)}
-              required
-            />
+            <input className="input" value={form.first_name} onChange={(e) => set("first_name", e.target.value)} required />
           </div>
           <div>
             <label className="label">Last name</label>
-            <input
-              className="input"
-              value={form.last_name}
-              onChange={(e) => set("last_name", e.target.value)}
-              required
-            />
+            <input className="input" value={form.last_name} onChange={(e) => set("last_name", e.target.value)} required />
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">Role</label>
-            <select
-              className="input"
-              value={form.role}
-              onChange={(e) => set("role", e.target.value)}
-            >
+            <select className="input" value={form.role} onChange={(e) => set("role", e.target.value)}>
               <option value="user">user</option>
               <option value="admin">admin</option>
             </select>
           </div>
           <div>
             <label className="label">Phone number</label>
-            <input
-              className="input"
-              value={form.phone_number}
-              onChange={(e) => set("phone_number", e.target.value)}
-              required
-            />
+            <input className="input" value={form.phone_number} onChange={(e) => set("phone_number", e.target.value)} required />
           </div>
         </div>
 
         <div>
           <label className="label">Password</label>
-          <input
-            className="input"
-            type="password"
-            value={form.password}
-            onChange={(e) => set("password", e.target.value)}
-            required
-          />
+          <input className="input" type="password" value={form.password} onChange={(e) => set("password", e.target.value)} required />
         </div>
         <div>
           <label className="label">Verify password</label>
-          <input
-            className="input"
-            type="password"
-            value={form.password2}
-            onChange={(e) => set("password2", e.target.value)}
-            required
-          />
+          <input className="input" type="password" value={form.password2} onChange={(e) => set("password2", e.target.value)} required />
         </div>
 
         {err && <p className="text-sm text-rose-600">{err}</p>}
 
         <div className="flex gap-2">
-          <button type="submit" className="btn btn-primary">
-            Sign up
-          </button>
-          <Link to="/login" className="btn">
-            Already have an account?
-          </Link>
+          <button type="submit" className="btn btn-primary">Sign up</button>
+          <Link to="/login" className="btn">Already have an account?</Link>
         </div>
       </form>
     </div>

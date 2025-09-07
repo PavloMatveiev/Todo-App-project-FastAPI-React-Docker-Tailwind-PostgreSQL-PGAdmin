@@ -6,7 +6,7 @@ A production-like full‑stack application demonstrating **clean API design**, *
 - **Backend**: FastAPI + Pydantic + SQLAlchemy + passlib(bcrypt) + python‑jose (JWT)
 - **Infrastructure**: Docker Compose services - `frontend`, `backend`, `db` (Postgres), `pgadmin`
 
-## Why this is relevant for BlackRock (Placement / Software Engineering)
+## Why this is relevant (Placement / Software Engineering)
 
 - **Engineering quality** - typed models, clear separation of concerns, robust error handling.
 - **Data & reliability** - relational schema, repeatable local environment, ops UI via pgAdmin.

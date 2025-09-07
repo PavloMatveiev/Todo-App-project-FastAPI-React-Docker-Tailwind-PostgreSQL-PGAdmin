@@ -12,9 +12,12 @@ export default function Todos() {
 
   const refresh = async () => {
     setLoading(true);
-    const { data } = await api.get("/todos/");
-    setList(data || []);
-    setLoading(false);
+    try {
+      const { data } = await api.get("/todos/");
+      setList(data || []);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -73,51 +76,26 @@ export default function Todos() {
         <h2 className="mb-4 text-xl font-semibold">
           {editingId ? "Edit todo" : "Make a new todo"}
         </h2>
-        <form
-          onSubmit={editingId ? save : create}
-          className="grid grid-cols-1 gap-4"
-        >
+        <form onSubmit={editingId ? save : create} className="grid grid-cols-1 gap-4">
           <div>
             <label className="label">Title</label>
-            <input
-              className="input"
-              value={form.title}
-              onChange={(e) => set("title", e.target.value)}
-              required
-            />
+            <input className="input" value={form.title} onChange={(e) => set("title", e.target.value)} required />
           </div>
           <div>
             <label className="label">Description</label>
-            <textarea
-              className="input"
-              rows={3}
-              value={form.description}
-              onChange={(e) => set("description", e.target.value)}
-              required
-            />
+            <textarea className="input" rows={3} value={form.description} onChange={(e) => set("description", e.target.value)} required />
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="label">Priority</label>
-              <select
-                className="select"
-                value={form.priority}
-                onChange={(e) => set("priority", e.target.value)}
-              >
+              <select className="select" value={form.priority} onChange={(e) => set("priority", e.target.value)}>
                 {[1, 2, 3, 4, 5].map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
+                  <option key={n} value={n}>{n}</option>
                 ))}
               </select>
             </div>
             <label className="flex items-center gap-2 mt-6 sm:mt-0">
-              <input
-                type="checkbox"
-                className="checkbox"
-                checked={form.complete}
-                onChange={(e) => set("complete", e.target.checked)}
-              />
+              <input type="checkbox" className="checkbox" checked={form.complete} onChange={(e) => set("complete", e.target.checked)} />
               <span>Complete</span>
             </label>
           </div>
@@ -126,9 +104,7 @@ export default function Todos() {
               {editingId ? "Save" : "Add new todo"}
             </button>
             {editingId && (
-              <button type="button" className="btn" onClick={cancel}>
-                Cancel
-              </button>
+              <button type="button" className="btn" onClick={cancel}>Cancel</button>
             )}
           </div>
         </form>
@@ -153,29 +129,18 @@ export default function Todos() {
                 </tr>
               </thead>
               <tbody>
-                {list.map((t, i) => (
-                  <tr key={t.id} className={t.complete ? "bg-emerald-50" : ""}>
-                    <td className="px-4 py-2">{i + 1}</td>
-                    <td
-                      className={`px-4 py-2 ${
-                        t.complete ? "line-through text-gray-500" : ""
-                      }`}
-                    >
-                      {t.title}
+                {list.map((todo, index) => (
+                  <tr key={todo.id} className={todo.complete ? "bg-emerald-50" : ""}>
+                    <td className="px-4 py-2">{index + 1}</td>
+                    <td className={`px-4 py-2 ${todo.complete ? "line-through text-gray-500" : ""}`}>
+                      {todo.title}
                     </td>
-                    <td className="px-4 py-2">{t.priority}</td>
-                    <td className="px-4 py-2">{t.complete ? "Yes" : "No"}</td>
+                    <td className="px-4 py-2">{todo.priority}</td>
+                    <td className="px-4 py-2">{todo.complete ? "Yes" : "No"}</td>
                     <td className="px-4 py-2">
                       <div className="flex gap-2">
-                        <button className="btn" onClick={() => startEdit(t)}>
-                          Edit
-                        </button>
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => remove(t.id)}
-                        >
-                          Delete
-                        </button>
+                        <button className="btn" onClick={() => startEdit(todo)}>Edit</button>
+                        <button className="btn btn-danger" onClick={() => remove(todo.id)}>Delete</button>
                       </div>
                     </td>
                   </tr>
