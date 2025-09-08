@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../api";
-import { useAuth } from "../auth.jsx";
+import { useAuth } from "../store/auth.jsx";
 
 export default function Login() {
   const [username, setUsername] = useState("");

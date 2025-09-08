@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../../auth.jsx";
+import { useAuth } from "../../store/auth.jsx";
 import AuthorisedNavbarButtons from "./AuthorisedNavbarButtons.jsx";
 import UnAuthorisedNavbarButtons from "./UnAuthorisedNavbarButtons.jsx";
 
