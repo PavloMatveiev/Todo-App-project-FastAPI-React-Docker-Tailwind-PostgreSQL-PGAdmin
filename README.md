@@ -141,7 +141,7 @@ Copy `.env.example` → `.env` and fill:
 │  ├─ src/
 │  │  ├─ api.js            # axios baseURL = "/api"
 │  │  ├─ auth.jsx          # JWT decode, role, guards
-│  │  ├─ components/       # navbar components
+│  │  ├─ components/       # navbar and input components
 │  │  ├─ store/            # context storage
 │  │  └─ pages/            # url based pages
 │  ├─ nginx.conf           # serves build and proxies /api to backend
