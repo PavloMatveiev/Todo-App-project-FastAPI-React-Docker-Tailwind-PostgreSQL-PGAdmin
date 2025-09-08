@@ -30,7 +30,7 @@ export default function AdminTable({
               <tr key={row.id} className="border-b">
                 {fields.map((field) => (
                   <td key={field}>
-                    {field === "complete" || f === "is_active" ? (row[field] ? "Yes" : "No") : String(row[f])}
+                    {field === "complete" || field === "is_active" ? (row[field] ? "Yes" : "No") : String(row[field])}
                   </td>
                 ))}
                 <td>
