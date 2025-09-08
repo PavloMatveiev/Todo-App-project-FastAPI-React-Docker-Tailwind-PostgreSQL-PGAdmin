@@ -13,7 +13,7 @@ export default function AdminTable({
 
   return (
     <div>
-      <h2 className="mb-4 text-xl font-semibold">{title}</h2>
+      <h2 className="main-title">{title}</h2>
       {error && <p className="text-rose-600">{error}</p>}
       <div className="overflow-x-auto">
         <table className="w-full text-left">

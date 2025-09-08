@@ -2,6 +2,7 @@ import { useActionState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../../api.js";
 import { useAuth } from "../../store/auth.jsx";
+import Label from "../../components/input/Label.jsx";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -36,17 +37,10 @@ export default function Login() {
 
   return (
     <div className="card">
-      <h2 className="mb-4 text-xl font-semibold">Login</h2>
+      <h2 className="main-title">Login</h2>
       <form action={formAction} className="space-y-4">
-
-        <div>
-          <label className="label" htmlFor="userName">Username</label>
-          <input className="input" type="text" name="userName" required />
-        </div>
-        <div>
-          <label className="label" htmlFor="password">Password</label>
-          <input className="input" type="password" name="password" required />
-        </div>
+        <Label name="userName" title="Username" />
+        <Label name="password" title="Password" type="password" />
 
         {formState.errors && (
           <ul className="text-sm text-rose-600">
@@ -55,9 +49,10 @@ export default function Login() {
             ))}
           </ul>
         )}
-
-        <button type="submit" className="btn btn-primary">Login</button>
-        <Link to="/register" className="ml-2 text-sm underline">No account? Register</Link>
+        <div className="flex gap-2">
+          <button type="submit" className="btn btn-primary">Login</button>
+          <Link to="/register" className="btn">No account? Register</Link>
+        </div>
       </form>
     </div>
   );

@@ -1,20 +1,60 @@
-import { useEffect, useState } from "react";
-import api from "../api";
+import { useEffect, useActionState, useState } from "react";
+import api from "../../api";
+import Label from "../../components/input/Label";
 
 export default function Todos() {
-  const empty = { title: "", description: "", priority: 3, complete: false };
+  const [formEditState, setFormEditState] = useState({});
   const [list, setList] = useState([]);
-  const [form, setForm] = useState(empty);
-  const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const set = (k, v) => setForm((s) => ({ ...s, [k]: v }));
+  const isEditing = Object.keys(formEditState).length !== 0;
+
+  async function loginAction(prevState, formData) {
+    const title = formData.get('title');
+    const description = formData.get('description');
+    const priority = formData.get('priority');
+    const complete = formData.has('complete');
+
+    if(!isEditing){
+      try {
+        await api.post("/todos/todo", {
+          title,
+          description,
+          priority: Number(priority),
+          complete,
+        });
+        refresh();
+      } catch (error) {
+        null
+      }
+    } else {
+      try {
+        await api.put(`/todos/todo/${formEditState.id}`, {
+          title,
+          description,
+          priority: Number(priority),
+          complete,
+        });
+        setFormEditState({});
+        refresh();
+      } catch (error) {
+        null
+      }
+    }
+  }
+
+  const [formState, formAction] = useActionState(loginAction, {});
 
   const refresh = async () => {
     setLoading(true);
     try {
       const { data } = await api.get("/todos/");
-      setList(data || []);
+      setList(prev => {
+        const indexById = new Map(prev.map((todo, index) => [todo.id, index]));
+        const next = (data || []).slice();
+        next.sort((a, b) => (indexById.get(a.id) ?? Infinity) - (indexById.get(b.id) ?? Infinity));
+        return next;
+      });
     } finally {
       setLoading(false);
     }
@@ -24,21 +64,9 @@ export default function Todos() {
     refresh().catch(() => setLoading(false));
   }, []);
 
-  const create = async (e) => {
-    e.preventDefault();
-    await api.post("/todos/todo", {
-      title: form.title,
-      description: form.description,
-      priority: Number(form.priority),
-      complete: !!form.complete,
-    });
-    setForm(empty);
-    refresh();
-  };
-
   const startEdit = (todo) => {
-    setEditingId(todo.id);
-    setForm({
+    setFormEditState({
+      id: todo.id,
       title: todo.title,
       description: todo.description,
       priority: todo.priority,
@@ -46,22 +74,8 @@ export default function Todos() {
     });
   };
 
-  const save = async (e) => {
-    e.preventDefault();
-    await api.put(`/todos/todo/${editingId}`, {
-      title: form.title,
-      description: form.description,
-      priority: Number(form.priority),
-      complete: !!form.complete,
-    });
-    setEditingId(null);
-    setForm(empty);
-    refresh();
-  };
-
   const cancel = () => {
-    setEditingId(null);
-    setForm(empty);
+    setFormEditState({});
   };
 
   const remove = async (id) => {
@@ -73,37 +87,21 @@ export default function Todos() {
   return (
     <div className="space-y-6">
       <div className="card">
-        <h2 className="mb-4 text-xl font-semibold">
-          {editingId ? "Edit todo" : "Make a new todo"}
+        <h2 className="main-title">
+          {isEditing ? "Edit todo" : "Make a new todo"}
         </h2>
-        <form onSubmit={editingId ? save : create} className="grid grid-cols-1 gap-4">
-          <div>
-            <label className="label">Title</label>
-            <input className="input" value={form.title} onChange={(e) => set("title", e.target.value)} required />
-          </div>
-          <div>
-            <label className="label">Description</label>
-            <textarea className="input" rows={3} value={form.description} onChange={(e) => set("description", e.target.value)} required />
-          </div>
+        <form key={formEditState.id ?? 'new'} action={formAction} className="grid grid-cols-1 gap-4">
+          <Label name="title" title="Title" defaultValue={formEditState?.title}/>
+          <Label name="description" title="Description" rows={3} defaultValue={formEditState?.description}/>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label className="label">Priority</label>
-              <select className="select" value={form.priority} onChange={(e) => set("priority", e.target.value)}>
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <option key={n} value={n}>{n}</option>
-                ))}
-              </select>
-            </div>
-            <label className="flex items-center gap-2 mt-6 sm:mt-0">
-              <input type="checkbox" className="checkbox" checked={form.complete} onChange={(e) => set("complete", e.target.checked)} />
-              <span>Complete</span>
-            </label>
+            <Label name="priority" title="Priority" options={[1, 2, 3, 4, 5]} defaultValue={formEditState?.priority}/>
+            <Label name="complete" title="Complete" type = "checkbox" defaultChecked={formEditState?.complete}/>
           </div>
           <div className="flex gap-2">
             <button type="submit" className="btn btn-primary">
-              {editingId ? "Save" : "Add new todo"}
+              {isEditing ? "Save" : "Add new todo"}
             </button>
-            {editingId && (
+            {isEditing && (
               <button type="button" className="btn" onClick={cancel}>Cancel</button>
             )}
           </div>

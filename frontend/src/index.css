@@ -29,7 +29,9 @@
 .checkbox {
   @apply h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500;
 }
-
-.navbar {
+.navbar-button {
   @apply rounded-lg px-4 py-1;
+}
+.main-title {
+  @apply mb-4 text-xl font-semibold;
 }

@@ -1,5 +1,6 @@
 import { useActionState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Label from "../../components/input/Label";
 import api from "../../api";
 
 import {
@@ -75,48 +76,20 @@ export default function Register() {
 
   return (
     <div className="card">
-      <h2 className="mb-4 text-xl font-semibold">Register</h2>
+      <h2 className="main-title">Register</h2>
       <form action={formAction} className="grid grid-cols-1 gap-4">
-        <div>
-          <label className="label" htmlFor="email">Email</label>
-          <input className="input" type="text" name="email" required />
-        </div>
-        <div>
-          <label className="label" htmlFor="userName">Username</label>
-          <input className="input" type="text" name="userName" required />
+        <Label name="email" title="Email" />
+        <Label name="userName" title="Username" />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Label name="firstName" title="First name" />
+          <Label name="lastName" title="Last name" />
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <label className="label" htmlFor="firstName">First name</label>
-            <input className="input" type="text" name="firstName" required />
-          </div>
-          <div>
-            <label className="label" htmlFor="lastName">Last name</label>
-            <input className="input" type="text" name="lastName" required />
-          </div>
+          <Label name="role" title="Role" options={["user", "admin"]}/>
+          <Label name="phone" title="Phone number"/>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <label className="label" htmlFor="role">Role</label>
-            <select className="input" type="text" name="role" required>
-              <option value="user">user</option>
-              <option value="admin">admin</option>
-            </select>
-          </div>
-          <div>
-            <label className="label" htmlFor="phone">Phone number</label>
-            <input className="input" type="text" name="phone" required />
-          </div>
-        </div>
-
-        <div>
-          <label className="label" htmlFor="password">Password</label>
-          <input className="input" type="password" name="password" required />
-        </div>
-        <div>
-          <label className="label" htmlFor="confirmPassword">Verify password</label>
-          <input className="input" type="password" name="confirmPassword" required />
-        </div>
+        <Label name="password" type="password" title="Password"/>
+        <Label name="confirmPassword" type="password" title="Verify password"/>
 
         {formState.errors && (
           <ul className="text-sm text-rose-600">
