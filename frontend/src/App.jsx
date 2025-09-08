@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./store/auth.jsx";
 import Navbar from "./components/navbar/Navbar.jsx";
-import Login from "./pages/Login.jsx";
+import Login from "./pages/auth/Login.jsx";
 import Register from "./pages/auth/Register.jsx";
 import Todos from "./pages/Todos.jsx";
 import AdminTodos from "./pages/admin/AdminTodos.jsx";

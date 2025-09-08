@@ -119,7 +119,7 @@ export default function Register() {
         </div>
 
         {formState.errors && (
-          <ul className="errors">
+          <ul className="text-sm text-rose-600">
             {formState.errors.map((error) => (
               <li key={error}>{error}</li>
             ))}

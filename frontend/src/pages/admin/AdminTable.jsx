@@ -7,20 +7,20 @@ export default function AdminTable({
   deleteMessage,
   fields,
 }) {
-  const [loading, rows, err, delRow] = useDataAccessor(path, instancesNaming, deleteMessage);
+  const [loading, rows, error, delRow] = useDataAccessor(path, instancesNaming, deleteMessage);
 
   if (loading) return <p>Loading...</p>;
 
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">{title}</h2>
-      {err && <p className="text-rose-600">{err}</p>}
+      {error && <p className="text-rose-600">{error}</p>}
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b">
-              {fields.map((f) => (
-                <th key={f} className="py-2">{f}</th>
+              {fields.map((field) => (
+                <th key={field} className="py-2">{field}</th>
               ))}
               <th></th>
             </tr>
@@ -28,9 +28,9 @@ export default function AdminTable({
           <tbody>
             {rows.map((row) => (
               <tr key={row.id} className="border-b">
-                {fields.map((f) => (
-                  <td key={f}>
-                    {f === "complete" || f === "is_active" ? (row[f] ? "Yes" : "No") : String(row[f])}
+                {fields.map((field) => (
+                  <td key={field}>
+                    {field === "complete" || f === "is_active" ? (row[field] ? "Yes" : "No") : String(row[f])}
                   </td>
                 ))}
                 <td>
