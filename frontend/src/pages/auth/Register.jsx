@@ -3,13 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import Label from "../../components/input/Label";
 import api from "../../api";
 
-import {
-  isEmail,
-  isNotEmpty,
-  isEqualToOtherValue,
-  hasMinLength,
-} from './validation';
-
 export default function Register() {
   const navigate = useNavigate();
   async function registerAction(prevState, formData) {
@@ -20,35 +13,9 @@ export default function Register() {
     const role = formData.get('role');
     const phone_number = formData.get('phone');
     const password = formData.get('password');
-    const confirmPassword = formData.get('confirmPassword');
+    const confirm_password = formData.get('confirmPassword');
 
     let errors = [];
-
-    if (!isEmail(email)) {
-      errors.push('Invalid email address.');
-    }
-
-    if (!isNotEmpty(password) || !hasMinLength(password, 6)) {
-      errors.push('You must provide a password with at least six characters.');
-    }
-
-    if (!isEqualToOtherValue(password, confirmPassword)) {
-      errors.push('Passwords do not match.');
-    }
-
-    if (!isNotEmpty(first_name) || !isNotEmpty(last_name)) {
-      errors.push('Please provide both your first and last name.');
-    }
-
-    if (!isNotEmpty(role)) {
-      errors.push('Please select a role.');
-    }
-
-    if (errors.length > 0) {
-      return {
-        errors,
-      };
-    }
 
     try {
       await api.post("/auth", {
@@ -59,14 +26,16 @@ export default function Register() {
         role,
         phone_number,
         password,
+        confirm_password
       });
       navigate("/login", { replace: true });
     } catch (error) {
-      errors.push('Registration failed! Try again later...');
-      console.log(error)
-      return {
-        errors,
-      };
+      errors.push(error?.response?.data?.detail ??
+                  error?.response?.data?.message ??
+                  (typeof error?.response?.data === "string" ? error.response.data : null) ??
+                  error?.message ??
+                  "Registration failed! Try again later...");
+      return { errors, };
     }
   }
 

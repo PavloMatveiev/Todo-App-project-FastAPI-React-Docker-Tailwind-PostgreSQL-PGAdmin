@@ -27,6 +27,7 @@ class CreateUserRequest(BaseModel):
     first_name: str
     last_name: str
     password: str
+    confirm_password: str
     role: str
     phone_number: str
 
@@ -76,8 +77,12 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
+    if create_user_request.password != create_user_request.confirm_password:
+        raise HTTPException(status_code=400, detail="Passwords do not match.")
+    
     if db.query(Users).filter(Users.username == create_user_request.username).first():
         raise HTTPException(status_code=400, detail="Username is already taken.")
+    
     if db.query(Users).filter(Users.email == create_user_request.email).first():
         raise HTTPException(status_code=400, detail="Email is already taken.")
 

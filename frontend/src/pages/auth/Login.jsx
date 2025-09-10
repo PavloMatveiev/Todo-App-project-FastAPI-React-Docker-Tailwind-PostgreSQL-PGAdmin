@@ -24,10 +24,12 @@ export default function Login() {
       login(data.access_token);
       navigate("/todos", { replace: true });
     } catch (error) {
-      errors.push("Invalid credentials");
-      return {
-        errors,
-      };
+      errors.push(error?.response?.data?.detail ??
+                  error?.response?.data?.message ??
+                  (typeof error?.response?.data === "string" ? error.response.data : null) ??
+                  error?.message ??
+                  "Invalid credentials");
+      return { errors, };
     }
   }
 

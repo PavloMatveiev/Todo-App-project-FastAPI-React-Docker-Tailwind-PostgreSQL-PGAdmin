@@ -24,8 +24,14 @@ export default function Todos() {
           complete,
         });
         refresh();
+        return { errors: [], message: "Todo created" };
       } catch (error) {
-        null
+        const message = error?.response?.data?.detail ??
+                    error?.response?.data?.message ??
+                    (typeof error?.response?.data === "string" ? error.response.data : null) ??
+                    error?.message ??
+                    "There was a problem creating the todo. Please try again later.";
+        return { errors: [message], message: null };
       }
     } else {
       try {
@@ -37,13 +43,19 @@ export default function Todos() {
         });
         setFormEditState({});
         refresh();
+        return { errors: [], message: "Todo updated" };
       } catch (error) {
-        null
+        const message = error?.response?.data?.detail ??
+                    error?.response?.data?.message ??
+                    (typeof error?.response?.data === "string" ? error.response.data : null) ??
+                    error?.message ??
+                    "There was a problem updating the todo. Please try again later.";
+        return { errors: [message], message: null };
       }
     }
   }
 
-  const [formState, formAction] = useActionState(loginAction, {});
+  const [formState, formAction] = useActionState(loginAction, { errors: [], message: null });
 
   const refresh = async () => {
     setLoading(true);
@@ -97,6 +109,17 @@ export default function Todos() {
             <Label name="priority" title="Priority" options={[1, 2, 3, 4, 5]} defaultValue={formEditState?.priority}/>
             <Label name="complete" title="Complete" type = "checkbox" defaultChecked={formEditState?.complete}/>
           </div>
+          {formState?.errors?.length > 0 && (
+            <ul className="text-sm text-rose-600">
+              {formState.errors.map((error) => (
+                <li key={error}>{error}</li>
+              ))}
+            </ul>
+          )}
+          {formState?.message && (
+            <p className="text-sm text-emerald-700">{formState.message}</p>
+          )}
+
           <div className="flex gap-2">
             <button type="submit" className="btn btn-primary">
               {isEditing ? "Save" : "Add new todo"}
